@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">live_tv</i>
+                    </div>
+                    <h3 class="card-title"><b>Go Live</b></h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <a href="">Click here to watch live streaming</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">image</i>
+                    </div>
+                    <h3 class="card-title"><b>Images</b></h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <a href="">Click here to watch captured images</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">video_library</i>
+                    </div>
+                    <h3 class="card-title"><b>Videos</b></h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <a href="">Click here to watch captured videos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title"><b>Bird Status</b></h4>
+                    <p class="card-category">Last upload to database on 30th October, 2020</p>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-hover">
+                        <thead class="text-primary">
+                        <th>Bird ID</th>
+                        <th>Cage Number</th>
+                        <th>Upload Time</th>
+                        <th>Status</th>
+                        </thead>
+                        <tbody>
+                        {% for i in "12345678" %}
+                            <tr>
+                            <td>{{i}}</td>
+                            <td>Cage No. {{i}}</td>
+                            <td>17:55:23</td>
+                            <td>Healthy</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

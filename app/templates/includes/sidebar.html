@@ -1,0 +1,30 @@
+<div class="sidebar" data-color="purple" data-background-color="white">
+    <div class="logo">
+        <a style="margin-left: 70px;" href="{% url 'home' %}">Bird Monitoring</a>
+    </div>
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'home' %}"><i class="material-icons">dashboard</i><p>Dashboard</p></a>
+                </li>
+                <li class="nav-item {% if 'birds' == segment %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'birds' %}"><i class="material-icons">favorite</i><p>Bird Profile</p></a>
+                </li>
+                <li class="nav-item {% if 'profile' == segment %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'profile' %}"><i class="material-icons">person</i><p>User Profile</p></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="{% url 'logout' %}" ><i class="material-icons">directions_run</i><p>Logout</p></a>
+                </li>
+            {% else %}
+                <li class="nav-item {% if 'login' == segment %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'login' %}"><i class="material-icons">person</i><p>Login</p></a>
+                </li>
+                <li class="nav-item {% if 'register' == segment %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'register' %}"><i class="material-icons">person_add</i><p>Register</p></a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
