@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.template import loader
-
+import cv2
+from django.views.decorators import gzip
 from .forms import LoginForm, SignUpForm
 
 
@@ -63,3 +64,29 @@ def register_user(request):
     else:
         form = SignUpForm()
     return render(request, "register.html", {"form": form, "msg": msg, "success": success, 'segment': 'register'})
+
+
+def get_frame():
+    camera = cv2.VideoCapture(1)
+    while True:
+        _, img = camera.read()
+        imgencode = cv2.imencode('.jpg', img)[1]
+        stringData = imgencode.tostring()
+        yield b'--frame\r\n'b'Content-Type: text/plain\r\n\r\n' + stringData + b'\r\n'
+    del(camera)
+
+
+def indexscreen(request):
+    try:
+        template = "detect-video.html"
+        return render(request, template, {'segment': 'live'})
+    except HttpResponseServerError:
+        print("error")
+
+
+@gzip.gzip_page
+def dynamic_stream(request, stream_path="video"):
+    try:
+        return StreamingHttpResponse(get_frame(), content_type="multipart/x-mixed-replace;boundary=frame")
+    except:
+        return "error"

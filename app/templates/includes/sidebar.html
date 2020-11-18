@@ -8,6 +8,9 @@
                 <li class="nav-item {% if 'index' == segment %} active {% endif %}">
                     <a class="nav-link" href="{% url 'home' %}"><i class="material-icons">dashboard</i><p>Dashboard</p></a>
                 </li>
+                <li class="nav-item {% if 'live' == segment %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'detect_video' %}"><i class="material-icons">live_tv</i><p>Live Stream</p></a>
+                </li>
                 <li class="nav-item {% if 'birds' == segment %} active {% endif %}">
                     <a class="nav-link" href="{% url 'birds' %}"><i class="material-icons">favorite</i><p>Bird Profile</p></a>
                 </li>
