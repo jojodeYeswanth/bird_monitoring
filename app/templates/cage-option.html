@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="navbar-wrapper">
+        <h3 class="navbar-brand"> &nbsp; Bird Added to database successfully. Bird ID: <b>{{ bird_id }}</b><br><br> &nbsp; Assign Cage to Bird</h3>
+    </div>
+    <div class="">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header">
+                    <a href="{% url 'add-cage' %}" class="card-title" style="font-size: large"><b>Create new Cage</b></a>
+                </div>
+            </div>
+        </div><div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header">
+                    <a href="{% url 'home' %}" class="card-title" style="font-size: large"><b>Add Bird to Existing Cage</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

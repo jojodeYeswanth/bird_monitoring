@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Bird, Cage, Breeding
+
+admin.site.register(Bird)
+admin.site.register(Cage)
+admin.site.register(Breeding)

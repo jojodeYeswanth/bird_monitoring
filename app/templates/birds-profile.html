@@ -4,21 +4,23 @@
 {% block stylesheets %}{% endblock stylesheets %}
 {% block content %}
     <div class="row">
-    {% for i in "12345678" %}
+    {% for i in bird_list %}
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-stats">
                 <div class="card-header card-header-primary card-header-icon">
                     <div class="card-icon">
-                        <span>Bird {{i}}</span>
+                        <span>Bird ID: {{ i.bird_id }}</span>
                     </div>
                     <h3 class="card-title">
-                        <small>Cage No. </small> {{i}}
+                        <span class="primary"> <b>{{ i.bird_name }}</b> </span><br>
+                        <small>Gender  : {{ i.bird_gender }} </small><br>
+                        <small>Color : {{ i.bird_color }} </small>
                     </h3>
                 </div>
                 <div class="card-footer">
                     <div class="stats">
                         <i class="material-icons text-primary">ondemand_video</i> &nbsp;
-                        <a href="">Go Live</a>
+                        <a href="{% url 'detect_video' %}">Go Live</a>
                     </div><br/>
                     <div class="stats">
                         <i class="material-icons text-primary">image</i> &nbsp;<br>

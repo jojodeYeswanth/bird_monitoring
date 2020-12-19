@@ -3,9 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, StreamingHttpResponse, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.template import loader
+from app.models import Bird
+from django.views import generic
+from django.views.generic.edit import CreateView
+from django.views.generic import TemplateView
 import cv2
 from django.views.decorators import gzip
-from .forms import LoginForm, SignUpForm
+from .forms import LoginForm, SignUpForm, AddBirdForm, AddCageForm
 
 
 @login_required(login_url="/login/")
@@ -23,10 +27,46 @@ def profile(request):
 
 
 @login_required(login_url="/login/")
-def birds(request):
-    context = {'segment': 'birds'}
-    html_template = loader.get_template('birds-profile.html')
-    return HttpResponse(html_template.render(context, request))
+def AddBird(request):
+    if request.method == 'POST':
+        form = AddBirdForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.user = request.user
+            instance = form.save()
+            return render(request, 'cage-option.html', {'bird_id': instance.bird_id})
+            # return redirect('cageoption')
+    else:
+        form = AddBirdForm()
+    return render(request, 'add-bird.html', {'form': form})
+
+
+@login_required(login_url="/login/")
+def AddCage(request):
+    if request.method == 'POST':
+        form = AddCageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.user = request.user
+            form.save()
+            return redirect('home')
+    else:
+        form = AddCageForm()
+    return render(request, 'add-cage.html', {'form': form})
+
+
+class cageoption(TemplateView):
+    template_name = 'cage-option.html'
+
+
+class BirdProfileView(CreateView):
+    model = Bird
+    context_object_name = 'bird_list'
+    template_name = 'birds-profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = {'segment': 'birds', "bird_list": Bird.objects.filter(user=self.request.user)}
+        return context
 
 
 def login_view(request):
@@ -73,7 +113,7 @@ def get_frame():
         imgencode = cv2.imencode('.jpg', img)[1]
         stringData = imgencode.tostring()
         yield b'--frame\r\n'b'Content-Type: text/plain\r\n\r\n' + stringData + b'\r\n'
-    del(camera)
+    del (camera)
 
 
 def indexscreen(request):
