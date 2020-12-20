@@ -35,6 +35,7 @@ class AddBirdForm(ModelForm):
 
 class AddCageForm(ModelForm):
     cage_num = forms.CharField(label="Enter Cage Number ")
+    bird_name = forms.ModelChoiceField(queryset=Bird.objects.all())
 
     class Meta:
         model = Bird
