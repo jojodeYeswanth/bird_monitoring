@@ -4,14 +4,16 @@ from django.http import HttpResponse, StreamingHttpResponse, HttpResponseServerE
 from django.shortcuts import render, redirect
 from django.template import loader
 from app.models import Bird
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
 import cv2
 from django.views.decorators import gzip
 from .forms import LoginForm, SignUpForm, AddBirdForm, AddCageForm
-
-
+import time
+import RPi.GPIO as GPIO
+import time
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
@@ -123,6 +125,36 @@ def indexscreen(request):
     except HttpResponseServerError:
         print("error")
 
+def capture(request):
+    camera = cv2.VideoCapture(1)
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    for i in range(5):
+        _, img = camera.read()
+        img_name = "{}_{}.jpeg".format(request.user,timestr)
+        cv2.imwrite(img_name, img)
+    del(camera)
+    return render(request,'detect-video.html',context=None)
+
+def motion_detect():
+    GPIO.setmode(GPIO.BOARD)
+
+    GPIO.setup(11, GPIO.IN)  # PIR
+    GPIO.setup(24, GPIO.OUT)  # BUzzer
+
+    try:
+        time.sleep(2)  # to stabilize sensor
+        while True:
+            if GPIO.input(11):
+                GPIO.output(24, True)
+                capture()
+                time.sleep(0.5)  # Buzzer turns on for 0.5 sec
+                GPIO.output(24, False)
+                print("Motion Detected...")
+                time.sleep(5)  # to avoid multiple detection
+            time.sleep(0.1)  # loop delay, should be less than detection delay
+
+    except:
+        GPIO.cleanup()
 
 @gzip.gzip_page
 def dynamic_stream(request, stream_path="video"):

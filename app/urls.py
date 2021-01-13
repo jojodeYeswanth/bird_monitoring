@@ -14,6 +14,7 @@ urlpatterns = [
 
     url(r'^/(?P<stream_path>(.*?))/$', views.dynamic_stream, name="videostream"),
     url(r'^detect-video/$', views.indexscreen, name='detect_video'),
+    url(r'^capture/$', views.capture, name='capture'),
 
     path('login/', login_view, name="login"),
     path('register/', register_user, name="register"),
